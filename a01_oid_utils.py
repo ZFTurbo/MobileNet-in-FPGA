@@ -14,10 +14,13 @@ else:
 STORAGE_PATH_TRAIN = DATASET_PATH + 'train/'
 STORAGE_PATH_TEST = DATASET_PATH + 'test/'
 STORAGE_PATH_VALID = DATASET_PATH + 'validation/'
+OID_CLASS_DESCRIPTION = DATASET_PATH + 'data_detection/challenge-2019-classes-description-500.csv'
+OID_ANNOTATIONS_TRAIN = DATASET_PATH + 'data_detection/challenge-2019-train-detection-bbox.csv'
+OID_ANNOTATIONS_VALID = DATASET_PATH + 'data_detection/challenge-2019-validation-detection-bbox.csv'
 
 
 def get_description_for_labels():
-    out = open(DATASET_PATH + 'class-descriptions-boxable.csv')
+    out = open(OID_CLASS_DESCRIPTION)
     lines = out.readlines()
     ret_1, ret_2 = dict(), dict()
     for l in lines:
@@ -89,7 +92,11 @@ def read_image_bgr_fast(path):
 
 
 def prepare_training_csv(type, true_labels_enc, output_path, side_size=128, min_class_size=5):
-    boxes = pd.read_csv(DATASET_PATH + 'annotations/{}-annotations-bbox.csv'.format(type))
+    print('Go for: {} True labels: {}'.format(type, true_labels_enc))
+    if type == 'train':
+        boxes = pd.read_csv(OID_ANNOTATIONS_TRAIN)
+    else:
+        boxes = pd.read_csv(OID_ANNOTATIONS_VALID)
     print('Initial boxes: {}'.format(len(boxes)))
     image_ids = boxes['ImageID'].unique()
     print('Unique images: {}'.format(len(image_ids)))

@@ -40,20 +40,3 @@ if __name__ == '__main__':
     # Prepare cars CSV
     prepare_training_csv('validation', TRUE_LABELS_CAR_ENC, CACHE_PATH + 'oid_validation_cars.csv', SIDE_SIZE, MIN_CLASS_SIZE)
     prepare_training_csv('train', TRUE_LABELS_CAR_ENC, CACHE_PATH + 'oid_train_cars.csv', SIDE_SIZE, MIN_CLASS_SIZE)
-
-
-'''
-Initial boxes: 204621
-Unique images: 35925
-Potential car boxes: 10070
-Potential images with car: 5204
-Images with car reduced: 5200
-Images without car: 30725
-
-Initial boxes: 14610229
-Unique images: 1743042
-Potential car boxes: 284869
-Potential images with car: 104864
-Images with car reduced: 104517
-Images without car: 1638525
-'''
