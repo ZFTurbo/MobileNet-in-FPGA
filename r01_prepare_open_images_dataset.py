@@ -2,8 +2,8 @@
 __author__ = 'Roman Solovyev (ZFTurbo), IPPM RAS'
 
 '''
-Prepare dataset for cars from Open Images Dataset (OID) from google
-1) Car must be at least 5px size (for 128x128 image)
+Prepare dataset for different classes from Open Images Dataset (OID) from google
+1) Class must be at least 5px size (for 128x128 image)
 '''
 
 

@@ -239,9 +239,8 @@ def train_mobile_net_v1(input_size, train_csv, valid_csv, type):
         EarlyStopping(monitor='val_loss', patience=patience, verbose=0),
         ModelCheckpoint(cache_model_path, monitor='val_loss', save_best_only=True, verbose=0),
         ModelCheckpoint(cache_model_path_score, monitor='val_loss', save_best_only=False, verbose=0),
-        CSVLogger(MODEL_PATH + 'history_people_lr_{}_optim_{}_v2.csv'.format(learning_rate, optimizer), append=True),
-        ReduceLROnPlateau(monitor='val_loss', factor=0.9, patience=5, min_lr=1e-9, min_delta=0.00001, verbose=1,
-                          mode='min'),
+        CSVLogger(MODEL_PATH + 'history_{}_lr_{}_optim_{}_v2.csv'.format(type, learning_rate, optimizer), append=True),
+        ReduceLROnPlateau(monitor='val_loss', factor=0.9, patience=5, min_lr=1e-9, min_delta=0.00001, verbose=1, mode='min'),
     ]
 
     steps_per_epoch = 100
