@@ -269,8 +269,8 @@ if __name__ == '__main__':
     # Params
     image_limit = 10000
     input_size = 128
-    model_type = 'people'
-    model_path = MODEL_PATH + 'best/weights_mobilenet_1_0.25_128px_people_loss_0.3600_acc_0.8442_epoch_38.h5'
+    model_type = 'cars'
+    model_path = MODEL_PATH + 'best/weights_mobilenet_1_0.25_128px_cars_loss_0.1088_acc_0.9631_epoch_67.h5'
     model_path_reduced = model_path[:-3] + '_reduced.h5'
     model_path_rescaled = model_path[:-3] + '_reduced_rescaled.h5'
 

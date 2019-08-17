@@ -946,11 +946,20 @@ def get_optimal_bit_for_weights(type, model_path, image_limit, acceptable_error_
 
 
 if __name__ == '__main__':
-    use_cache = False
-    acceptable_error_rate = 0.005 # 0.5%
-    image_limit = 3000
-    type = 'people'
-    model_path_rescaled = MODEL_PATH + 'best/weights_mobilenet_1_0.25_128px_people_loss_0.3600_acc_0.8442_epoch_38_reduced_rescaled.h5'
+    if 0:
+        use_cache = False
+        acceptable_error_rate = 0.005 # 0.5%
+        image_limit = 3000
+        type = 'people'
+        model_path_rescaled = MODEL_PATH + 'best/weights_mobilenet_1_0.25_128px_people_loss_0.3600_acc_0.8442_epoch_38_reduced_rescaled.h5'
+
+    if 1:
+        use_cache = False
+        acceptable_error_rate = 0.005  # 0.5%
+        image_limit = 3000
+        type = 'cars'
+        model_path_rescaled = MODEL_PATH + 'best/weights_mobilenet_1_0.25_128px_cars_loss_0.1088_acc_0.9631_epoch_67_reduced_rescaled.h5'
+
 
     image_bit_precision, weight_bit_precision, bias_bit_precision, convW, convB = get_optimal_bit_for_weights(type, model_path_rescaled, image_limit, acceptable_error_rate, use_cache)
     if image_bit_precision > 0:
@@ -961,3 +970,10 @@ if __name__ == '__main__':
     else:
         print('Impossible to find optimal bit!')
     sess.close()
+
+'''
+weights_mobilenet_1_0.25_128px_people_loss_0.3600_acc_0.8442_epoch_38_reduced_rescaled.h5
+Optimal 12, 11, 10, 7, 3
+
+
+'''
