@@ -39,8 +39,6 @@ from a01_oid_utils import *
 from a00_common_functions import *
 from albumentations import *
 import pandas as pd
-import pyvips
-from PIL import Image
 from r01_prepare_open_images_dataset import DATASET_PATH
 from multiprocessing.pool import ThreadPool
 from multiprocessing import cpu_count

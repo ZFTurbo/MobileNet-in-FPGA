@@ -898,7 +898,7 @@ def get_optimal_bit_for_weights(type, model_path, image_limit, acceptable_error_
             print('Second run. Decrease weights bitsize')
             while 1:
                 weight_bit_precision -= 1
-                bias_bit_precision = image_bit_precision
+                # bias_bit_precision = image_bit_precision
                 print('\nStart image bit precision: {} Weights precision: {} Bias precision: {}'.format(image_bit_precision, weight_bit_precision, bias_bit_precision))
                 error_rate, pred_float, pred_fixed = go_mat_model(model, images, image_bit_precision, weight_bit_precision, bias_bit_precision, debug_info=True)
                 print('Error rate: {:.6f}'.format(error_rate))
@@ -985,5 +985,5 @@ Optimal 12, 11, 10, 7, 3
 weights_mobilenet_1_0.25_128px_cars_loss_0.1088_acc_0.9631_epoch_67_reduced_rescaled.h5
 Optimal 10, 9, 8, 7, 3
 weights_mobilenet_1_0.25_128px_animals_loss_0.2486_acc_0.8967_epoch_33_reduced_rescaled.h5
-
+Optimal 12, 11, 10, 7, 3
 '''

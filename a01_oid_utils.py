@@ -1,7 +1,6 @@
 # coding: utf-8
 __author__ = 'Roman Solovyev (ZFTurbo), IPPM RAS'
 
-import pyvips
 import platform
 from PIL import Image
 from a00_common_functions import *
@@ -79,20 +78,13 @@ def random_rotate(image, max_angle):
 
 def read_single_image(path):
     try:
-        img = pyvips.Image.new_from_file(path, access='sequential')
-        img = np.ndarray(buffer=img.write_to_memory(),
-                         dtype=np.uint8,
-                         shape=[img.height, img.width, img.bands])
+        img = np.array(Image.open(path))
     except:
-        print('Pyvips error! {}'.format(path))
         try:
-            img = np.array(Image.open(path))
+            img = cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB)
         except:
-            try:
-                img = cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB)
-            except:
-                print('Fail')
-                return None
+            print('Fail')
+            return None
 
     if len(img.shape) == 2:
         img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
@@ -110,11 +102,7 @@ def read_single_image(path):
 
 
 def read_image_bgr_fast(path):
-    img2 = read_single_image(path)
-    try:
-        img2 = img2[:, :, ::-1]
-    except:
-        return None
+    img2 = cv2.imread(path)
     return img2
 
 
