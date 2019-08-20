@@ -21,7 +21,7 @@ Note: You can skip part 1, 2 and 3 if you use our pretrained weight files below
 |  | People detector (128px) | Cars detector (128px)  | Animals detector (128px) |
 | --- | --- | --- | --- |
 | Accuracy (%) | 84.42 | 96.31 | 89.67 |
-| Init model (can be used for training and fine-tuning) | people.h5 | cars.h5 | animals.h5 |
+| Init model (can be used for training and fine-tuning) | people.h5 | cars.h5 | [animals.h5](https://github.com/ZFTurbo/MobileNet-in-FPGA/releases/download/v1.0/weights_mobilenet_1_0.25_128px_animals_loss_0.2486_acc_0.8967_epoch_33.h5) |
 | Reduced and rescaled model | people.h5 | cars.h5 | animals.h5 |
 | Optimal bits found | 12, 11, 10, 7, 3 | 10, 9, 8, 7, 3 | 12, 11, 10, 7, 3 |
 | Weights in verilog format | link | link | link |
