@@ -18,11 +18,11 @@ Note: You can skip part 1, 2 and 3 if you use our pretrained weight files below
 
 ## Pre-trained models
 
-|  | People detector (128 px) | Cars detector (128 px)  | Animals detector (128 px) |
+|  | People detector (128px) | Cars detector (128px)  | Animals detector (128px) |
 | --- | --- | --- | --- |
 | Accuracy (%) | 84.42 | 96.31 | 89.67 |
 | Init model (can be used for training and fine-tuning) | people.h5 | cars.h5 | animals.h5 |
-| Reduced and rescaled model | people_r.h5 | cars_r.h5 | animals_r.h5 |
+| Reduced and rescaled model | people.h5 | cars.h5 | animals.h5 |
 | Optimal bits found | 12, 11, 10, 7, 3 | 10, 9, 8, 7, 3 | 12, 11, 10, 7, 3 |
 | Weights in verilog format | link | link | link |
 
