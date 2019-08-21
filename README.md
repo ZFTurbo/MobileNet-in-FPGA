@@ -9,7 +9,7 @@ Python 3.*, keras 2.2.4, tensorflow, kito
 
 
 ## How to run
-1) `python3 r01_prepare_open_images_dataset.py` - it will create training files using Open Images Dataset (OID).
+1) `python3 r01_prepare_open_images_dataset.py` - it will create training files using [Open Images Dataset (OID)](https://storage.googleapis.com/openimages/web/index.html).
 2) `python3 r02_train_mobilenet.py` - run training process. Will create weights for model and output accuracy of model.
 3) `python3 r03_mobilenet_v1_reduce_and_scale_model.py` - batchnorm fusion and rescale model on range (0, 1) instead of (0, 6). Returns new rescaled model
 
