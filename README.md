@@ -17,6 +17,7 @@ Note: You can skip part 1, 2 and 3 if you use our pretrained weight files below
 
 4) `python3 r04_find_optimal_bit_for_weights.py` - code to find optimal bit for feature maps, weights and biases, also returns maximum overflow for weights and biases over 1.0 value.
 5) `python3 r05_gen_weights_in_verilog_format.py` - generate weights in verliog format using optimal bits from previous step 
+6) `python3 r06_generate_testbench.py` - generate intermediate feature maps for each layer and details about first pixel calculation
 
 ## Pre-trained models
 
