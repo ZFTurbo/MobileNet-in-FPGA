@@ -53,16 +53,8 @@ def save_history(history, path, columns=('loss', 'val_loss')):
 
 def get_model(weights_path):
     from keras.models import load_model
-    try:
-        from keras_applications.mobilenet import relu6
-    except:
-        def relu6(x):
-            from keras import backend
-            return backend.relu(x, max_value=6)
-
     print('Load: {}'.format(weights_path))
-    model = load_model(weights_path, custom_objects={'relu_1': relu_1, 'relu6': relu6})
-    # print(model.summary())
+    model = load_model(weights_path, custom_objects={'relu_1': relu_1})
     print('Number of layers: {}'.format(len(model.layers)))
     return model
 
