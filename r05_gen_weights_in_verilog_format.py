@@ -463,10 +463,10 @@ def generate_weights_for_layers(model, bp, weight_bit_precision, bias_bit_precis
 
 
 if __name__ == '__main__':
+    type = 'animals'
     model_path = MODEL_PATH + 'best/weights_mobilenet_1_0.25_128px_animals_loss_0.2486_acc_0.8967_epoch_33_reduced_rescaled.h5'
     acceptable_error_rate = 0.005  # 0.5%
     image_limit = 3000
-    type = 'animals'
 
     model = get_model(model_path)
     if 0:
