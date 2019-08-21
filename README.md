@@ -1,5 +1,7 @@
 # MobileNet in FPGA
-Generator of verilog description for FPGA MobileNet implementation
+Generator of verilog description for FPGA MobileNet implementation.
+There are several pre-trained models available for frequent tasks like detection of people, cars and animals.
+You can train your own model easily on your dataset using code from this repository and have the same very fast detector on FPGA working in real time for your own task.
 
 
 ## Requirements
@@ -25,6 +27,7 @@ Note: You can skip part 1, 2 and 3 if you use our pretrained weight files below
 | Reduced and rescaled model | [people.h5](https://github.com/ZFTurbo/MobileNet-in-FPGA/releases/download/v1.0/weights_mobilenet_1_0.25_128px_people_loss_0.3600_acc_0.8442_epoch_38_reduced_rescaled.h5) | [cars.h5](https://github.com/ZFTurbo/MobileNet-in-FPGA/releases/download/v1.0/weights_mobilenet_1_0.25_128px_cars_loss_0.1088_acc_0.9631_epoch_67_reduced_rescaled.h5) | [animals.h5](https://github.com/ZFTurbo/MobileNet-in-FPGA/releases/download/v1.0/weights_mobilenet_1_0.25_128px_animals_loss_0.2486_acc_0.8967_epoch_33_reduced_rescaled.h5) |
 | Optimal bits found | 12, 11, 10, 7, 3 | 10, 9, 8, 7, 3 | 12, 11, 10, 7, 3 |
 | Weights in verilog format | link | link | link |
+
 
 ## Description of method
 
