@@ -4,8 +4,14 @@ There are several pre-trained models available for frequent tasks like detection
 You can train your own model easily on your dataset using code from this repository and have the same very fast detector on FPGA working in real time for your own task.
 
 
-## Requirements
+## Software requirements
 Python 3.*, keras 2.2.4, tensorflow, kito
+
+
+## Hardware requirements
+1) TFT-screen ILI9341 Size: 2.8", Resolution: 240x320, Interface: SPI
+2) Camera OV5640. Active array size: 2592 x 1944
+3) OpenVINO Starter Kit. Cyclone V (301K LE, 13,917 Kbits embedded memory)
 
 
 ## How to run
@@ -29,6 +35,9 @@ Note: You can skip part 1, 2 and 3 if you use our pretrained weight files below
 | Optimal bits found | 12, 11, 10, 7, 3 | 10, 9, 8, 7, 3 | 12, 11, 10, 7, 3 |
 | Weights in verilog format | link | link | link |
 
+## Connection of peripherals
+
+![Connection of peripherals](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/img/Connection-of-Periferals.png)
 
 ## Description of method
 
