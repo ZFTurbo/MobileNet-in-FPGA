@@ -199,7 +199,7 @@ def get_shape_string(w):
     return r
 
 
-def gen_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision, bias_bit_precision, convW, convB, out_dir):
+def gen_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision, bias_bit_precision, convW, convB, out):
     # Convolution with fixed point
     config = layer.get_config()
     use_bias = config['use_bias']
@@ -236,9 +236,6 @@ def gen_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision
     print('Max value to store weights: {} bias: {}'.format(w_check_max, b_check_max))
     print('Reduced bits weights: {} bias: {}'.format(precisionW, precisionB))
 
-    out_file = out_dir + 'level_{:02d}_name_{}_bpset_{}_{}_{}_shape_{}.txt'.format(level_id, layer.name,
-                bit_precizion + 1, weight_bit_precision + 1 + convW, bias_bit_precision + 1 + convB, get_shape_string(w))
-    out = open(out_file, 'w')
     print('Go for: {} Shape: {}'.format(layer.name, w.shape))
 
     tp1 = 'bin'
@@ -292,11 +289,10 @@ def gen_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision
         requred_mem_in_bits += precisionB
         total += 1
 
-    out.close()
     return requred_mem_in_bits
 
 
-def gen_depthwise_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision, bias_bit_precision, convW, convB, out_dir):
+def gen_depthwise_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision, bias_bit_precision, convW, convB, out):
     config = layer.get_config()
     use_bias = config['use_bias']
     kernel_size = config['kernel_size']
@@ -331,9 +327,6 @@ def gen_depthwise_convolution_weights(level_id, layer, bit_precizion, weight_bit
     print('Max value to store weights: {} bias: {}'.format(w_check_max, b_check_max))
     print('Reduced bits weights: {} bias: {}'.format(precisionW, precisionB))
 
-    out_file = out_dir + 'level_{:02d}_name_{}_bpset_{}_{}_{}_shape_{}.txt'.format(level_id, layer.name,
-                bit_precizion + 1, weight_bit_precision + 1 + convW, bias_bit_precision + 1 + convB, get_shape_string(w))
-    out = open(out_file, 'w')
     print('Go for: {} Shape: {}'.format(layer.name, w.shape))
 
     tp1 = 'bin'
@@ -382,11 +375,10 @@ def gen_depthwise_convolution_weights(level_id, layer, bit_precizion, weight_bit
         requred_mem_in_bits += precisionB
         total += 1
 
-    out.close()
     return requred_mem_in_bits
 
 
-def gen_dense_weights(level_id, layer, bit_precizion, out_dir):
+def gen_dense_weights(level_id, layer, bit_precizion, out):
     config = layer.get_config()
     use_bias = config['use_bias']
     requred_mem_in_bits = 0
@@ -402,9 +394,6 @@ def gen_dense_weights(level_id, layer, bit_precizion, out_dir):
         print('Overflow for depthwise conv weights!')
         exit()
 
-    out_file = out_dir + 'level_{:02d}_name_{}_bp_{}_shape_{}.txt'.format(level_id, layer.name, bit_precizion,
-                                                                              get_shape_string(w))
-    out = open(out_file, 'w')
     print('Go for: {} Shape: {}'.format(layer.name, w.shape))
 
     tp1 = 'bin'
@@ -432,11 +421,10 @@ def gen_dense_weights(level_id, layer, bit_precizion, out_dir):
             requred_mem_in_bits += precision
         out.write('\n')
 
-    out.close()
     return requred_mem_in_bits
 
 
-def generate_weights_for_layers(model, bp, weight_bit_precision, bias_bit_precision, convW, convB, out_dir):
+def generate_weights_for_layers_sep_files(model, bp, weight_bit_precision, bias_bit_precision, convW, convB, out_dir):
     weights_required_memory = 0
 
     for level_id in range(len(model.layers)):
@@ -445,14 +433,30 @@ def generate_weights_for_layers(model, bp, weight_bit_precision, bias_bit_precis
         req_mem = 0
 
         if layer_type == 'Conv2D':
-            req_mem = gen_convolution_weights(level_id, layer, bp, weight_bit_precision, bias_bit_precision, convW, convB, out_dir)
+            out_file = out_dir + 'level_{:02d}_name_{}_bpset_{}_{}_{}_shape_{}.txt'.format(level_id, layer.name,
+                                                                                           bp + 1,
+                                                                                           weight_bit_precision + 1 + convW,
+                                                                                           bias_bit_precision + 1 + convB,
+                                                                                           get_shape_string(layer.get_weights()[0]))
+            out = open(out_file, 'w')
+            req_mem = gen_convolution_weights(level_id, layer, bp, weight_bit_precision, bias_bit_precision, convW, convB, out)
+            out.close()
 
         elif layer_type == 'DepthwiseConv2D':
-            req_mem = gen_depthwise_convolution_weights(level_id, layer, bp, weight_bit_precision, bias_bit_precision, convW, convB, out_dir)
+            out_file = out_dir + 'level_{:02d}_name_{}_bpset_{}_{}_{}_shape_{}.txt'.format(level_id, layer.name,
+                                                                                           bp + 1,
+                                                                                           weight_bit_precision + 1 + convW,
+                                                                                           bias_bit_precision + 1 + convB,
+                                                                                           get_shape_string(layer.get_weights()[0]))
+            out = open(out_file, 'w')
+            req_mem = gen_depthwise_convolution_weights(level_id, layer, bp, weight_bit_precision, bias_bit_precision, convW, convB, out)
+            out.close()
 
         elif layer_type == 'Dense':
-            req_mem = gen_dense_weights(level_id, layer, weight_bit_precision, out_dir)
-
+            out_file = out_dir + 'level_{:02d}_name_{}_bp_{}_shape_{}.txt'.format(level_id, layer.name, weight_bit_precision, get_shape_string(layer.get_weights()[0]))
+            out = open(out_file, 'w')
+            req_mem = gen_dense_weights(level_id, layer, weight_bit_precision, out)
+            out.close()
         else:
             continue
 
@@ -468,9 +472,8 @@ if __name__ == '__main__':
     acceptable_error_rate = 0.005  # 0.5%
     image_limit = 3000
 
-    model = get_model(model_path)
     if 0:
-        image_bit_precision, weight_bit_precision, bias_bit_precision, convW, convB = get_optimal_bit_for_weights(type, model_path_rescaled, image_limit, acceptable_error_rate, use_cache)
+        image_bit_precision, weight_bit_precision, bias_bit_precision, convW, convB = get_optimal_bit_for_weights(type, model_path, image_limit, acceptable_error_rate, use_cache=True)
     else:
         image_bit_precision, weight_bit_precision, bias_bit_precision, convW, convB = 12, 11, 10, 7, 3
 
@@ -478,4 +481,5 @@ if __name__ == '__main__':
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
 
-    generate_weights_for_layers(model, image_bit_precision, weight_bit_precision, bias_bit_precision, convW, convB, out_dir)
+    model = get_model(model_path)
+    generate_weights_for_layers_sep_files(model, image_bit_precision, weight_bit_precision, bias_bit_precision, convW, convB, out_dir)
