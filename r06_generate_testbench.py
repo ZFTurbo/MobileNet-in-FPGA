@@ -363,13 +363,22 @@ def get_debug_image():
     return img_list
 
 
-# This function works slow, so it should be run once to find optimal bit
 def generate_layer_results_for_image(type, model, image_bit_precision, weight_bit_precision, bias_bit_precision, convW, convB):
     print(model.summary())
 
     # Get only one image
-    images, answers = get_image_set(type, 2, 'math')
-    images = images[0:1]
+    try:
+        a = 10/0
+        # If OID dataset exists
+        images, answers = get_image_set(type, 2, 'math')
+        images = images[0:1]
+        print('Use OID images')
+    except:
+        images = np.zeros((1, 128, 128, 3), dtype=np.float32)
+        images[...] = 255
+        images = preproc_input_mathmodel(images)
+        print('No OID images found. Use generated image')
+
     generate_layer_results(model, images, image_bit_precision, weight_bit_precision, bias_bit_precision, convW, convB)
 
 
