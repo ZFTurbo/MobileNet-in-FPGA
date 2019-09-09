@@ -17,6 +17,10 @@ if __name__ == '__main__':
 from r04_find_optimal_bit_for_weights import *
 
 
+STORAGE_COUNT_WEIGHTS = 0
+STORAGE_COUNT_BIAS = 0
+
+
 # Note: We suppose that every Conv2D layer has type "same"
 # In Tensorflow weight matrices already transposed
 def my_convolve(input, kernel):
@@ -199,7 +203,9 @@ def get_shape_string(w):
     return r
 
 
-def gen_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision, bias_bit_precision, convW, convB, out):
+def gen_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision, bias_bit_precision, convW, convB, out_weights, out_bias):
+    global STORAGE_COUNT_WEIGHTS, STORAGE_COUNT_BIAS
+
     # Convolution with fixed point
     config = layer.get_config()
     use_bias = config['use_bias']
@@ -239,7 +245,14 @@ def gen_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision
     print('Go for: {} Shape: {}'.format(layer.name, w.shape))
 
     tp1 = 'bin'
-    total = 0
+
+    s1 = '// Level: {:02d} Name: {} Type: {} BP Set: {} {} {} Shape: {}\n\n'.format(level_id, layer.name, layer.__class__.__name__,
+                                                                                   bit_precizion + 1,
+                                                                                   weight_bit_precision + 1 + convW,
+                                                                                   bias_bit_precision + 1 + convB,
+                                                                                   get_shape_string(w))
+    out_weights.write(s1)
+    out_bias.write(s1)
 
     # Cycle by outputs
     for i in range(w.shape[3]):
@@ -257,16 +270,16 @@ def gen_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision
                         dec_verilog = -dec_verilog
                     if tp1 == 'hex':
                         hx = hex(int(bin1, 2))[2:].upper()
-                        out.write(
-                            "storage[{}] = {}{}'h{}; // {} {}\n".format(total, sgn, precisionW, hx, dec_verilog, w[k, l, j, i]))
+                        out_weights.write(
+                            "storage[{}] = {}{}'h{}; // {} {}\n".format(STORAGE_COUNT_WEIGHTS, sgn, precisionW, hx, dec_verilog, w[k, l, j, i]))
                     else:
-                        out.write(
-                            "storage[{}] = {}{}'b{}; // {} {}\n".format(total, sgn, precisionW, bin1, dec_verilog, w[k, l, j, i]))
+                        out_weights.write(
+                            "storage[{}] = {}{}'b{}; // {} {}\n".format(STORAGE_COUNT_WEIGHTS, sgn, precisionW, bin1, dec_verilog, w[k, l, j, i]))
                     requred_mem_in_bits += precisionW
-                    total += 1
+                    STORAGE_COUNT_WEIGHTS += 1
             if w.shape[1] > 1:
-                out.write('\n')
-        out.write('\n')
+                out_weights.write('\n')
+        out_weights.write('\n')
 
     # Cycle by outputs
     for i in range(w.shape[3]):
@@ -279,20 +292,21 @@ def gen_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision
             dec_verilog = -dec_verilog
         if tp1 == 'hex':
             hx = hex(int(bin1, 2))[2:].upper()
-            out.write(
-                "storage_bias[{}] = {}{}'h{}; // {} {}\n".format(total, sgn, precisionB, hx, dec_verilog,
-                                                                 b[i]))
+            out_bias.write(
+                "storage_bias[{}] = {}{}'h{}; // {} {}\n".format(STORAGE_COUNT_BIAS, sgn, precisionB, hx, dec_verilog, b[i]))
         else:
-            out.write(
-                "storage_bias[{}] = {}{}'b{}; // {} {}\n".format(total, sgn, precisionB, bin1, dec_verilog,
-                                                                 b[i]))
+            out_bias.write(
+                "storage_bias[{}] = {}{}'b{}; // {} {}\n".format(STORAGE_COUNT_BIAS, sgn, precisionB, bin1, dec_verilog, b[i]))
         requred_mem_in_bits += precisionB
-        total += 1
+        STORAGE_COUNT_BIAS += 1
+    out_bias.write('\n')
 
     return requred_mem_in_bits
 
 
-def gen_depthwise_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision, bias_bit_precision, convW, convB, out):
+def gen_depthwise_convolution_weights(level_id, layer, bit_precizion, weight_bit_precision, bias_bit_precision, convW, convB, out_weights, out_bias):
+    global STORAGE_COUNT_WEIGHTS, STORAGE_COUNT_BIAS
+
     config = layer.get_config()
     use_bias = config['use_bias']
     kernel_size = config['kernel_size']
@@ -329,8 +343,15 @@ def gen_depthwise_convolution_weights(level_id, layer, bit_precizion, weight_bit
 
     print('Go for: {} Shape: {}'.format(layer.name, w.shape))
 
+    s1 = '// Level: {:02d} Name: {} Type: {} BP Set: {} {} {} Shape: {}\n\n'.format(level_id, layer.name, layer.__class__.__name__,
+                                                                                   bit_precizion + 1,
+                                                                                   weight_bit_precision + 1 + convW,
+                                                                                   bias_bit_precision + 1 + convB,
+                                                                                   get_shape_string(w))
+    out_weights.write(s1)
+    out_bias.write(s1)
+
     tp1 = 'bin'
-    total = 0
     # Cycle by inputs. Output is always 1
     for i in range(w.shape[2]):
         # Cycle by conv 3x3
@@ -345,14 +366,14 @@ def gen_depthwise_convolution_weights(level_id, layer, bit_precizion, weight_bit
                     dec_verilog = -dec_verilog
                 if tp1 == 'hex':
                     hx = hex(int(bin1, 2))[2:].upper()
-                    out.write(
-                        "storage[{}] = {}{}'h{}; // {} {}\n".format(total, sgn, precisionW, hx, dec_verilog, w[k, l, i, 0]))
+                    out_weights.write(
+                        "storage[{}] = {}{}'h{}; // {} {}\n".format(STORAGE_COUNT_WEIGHTS, sgn, precisionW, hx, dec_verilog, w[k, l, i, 0]))
                 else:
-                    out.write(
-                        "storage[{}] = {}{}'b{}; // {} {}\n".format(total, sgn, precisionW, bin1, dec_verilog, w[k, l, i, 0]))
+                    out_weights.write(
+                        "storage[{}] = {}{}'b{}; // {} {}\n".format(STORAGE_COUNT_WEIGHTS, sgn, precisionW, bin1, dec_verilog, w[k, l, i, 0]))
                 requred_mem_in_bits += precisionW
-                total += 1
-        out.write('\n')
+                STORAGE_COUNT_WEIGHTS += 1
+        out_weights.write('\n')
 
     # Cycle by inputs. Output is always 1
     for i in range(w.shape[2]):
@@ -365,20 +386,23 @@ def gen_depthwise_convolution_weights(level_id, layer, bit_precizion, weight_bit
             dec_verilog = -dec_verilog
         if tp1 == 'hex':
             hx = hex(int(bin1, 2))[2:].upper()
-            out.write(
-                "storage_bias[{}] = {}{}'h{}; // {} {}\n".format(total, sgn, precisionB, hx, dec_verilog,
+            out_bias.write(
+                "storage_bias[{}] = {}{}'h{}; // {} {}\n".format(STORAGE_COUNT_BIAS, sgn, precisionB, hx, dec_verilog,
                                                             w[k, l, i, 0]))
         else:
-            out.write(
-                "storage_bias[{}] = {}{}'b{}; // {} {}\n".format(total, sgn, precisionB, bin1, dec_verilog,
+            out_bias.write(
+                "storage_bias[{}] = {}{}'b{}; // {} {}\n".format(STORAGE_COUNT_BIAS, sgn, precisionB, bin1, dec_verilog,
                                                             w[k, l, i, 0]))
         requred_mem_in_bits += precisionB
-        total += 1
+        STORAGE_COUNT_BIAS += 1
+    out_bias.write('\n')
 
     return requred_mem_in_bits
 
 
-def gen_dense_weights(level_id, layer, bit_precizion, out):
+def gen_dense_weights(level_id, layer, bit_precizion, out_weights):
+    global STORAGE_COUNT_WEIGHTS, STORAGE_COUNT_BIAS
+
     config = layer.get_config()
     use_bias = config['use_bias']
     requred_mem_in_bits = 0
@@ -396,8 +420,12 @@ def gen_dense_weights(level_id, layer, bit_precizion, out):
 
     print('Go for: {} Shape: {}'.format(layer.name, w.shape))
 
+    s1 = '// Level: {:02d} Name: {} Type: {} BP Set: {} Shape: {}\n\n'.format(level_id, layer.name, layer.__class__.__name__,
+                                                                                   bit_precizion + 1,
+                                                                                   get_shape_string(w))
+    out_weights.write(s1)
+
     tp1 = 'bin'
-    total = 0
     precision = bit_precizion + 1
     # Cycle by outputs
     for i in range(w.shape[1]):
@@ -412,20 +440,26 @@ def gen_dense_weights(level_id, layer, bit_precizion, out):
                 dec_verilog = -dec_verilog
             if tp1 == 'hex':
                 hx = hex(int(bin1, 2))[2:].upper()
-                out.write(
-                    "storage[{}] = {}{}'h{}; // {} {}\n".format(total, sgn, precision, hx, dec_verilog, w[j, i]))
+                out_weights.write(
+                    "storage[{}] = {}{}'h{}; // {} {}\n".format(STORAGE_COUNT_WEIGHTS, sgn, precision, hx, dec_verilog, w[j, i]))
             else:
-                out.write(
-                    "storage[{}] = {}{}'b{}; // {} {}\n".format(total, sgn, precision, bin1, dec_verilog, w[j, i]))
-            total += 1
+                out_weights.write(
+                    "storage[{}] = {}{}'b{}; // {} {}\n".format(STORAGE_COUNT_WEIGHTS, sgn, precision, bin1, dec_verilog, w[j, i]))
+            STORAGE_COUNT_WEIGHTS += 1
             requred_mem_in_bits += precision
-        out.write('\n')
+        out_weights.write('\n')
 
     return requred_mem_in_bits
 
 
-def generate_weights_for_layers_sep_files(model, bp, weight_bit_precision, bias_bit_precision, convW, convB, out_dir):
+def generate_weights_for_layers(model, bp, weight_bit_precision, bias_bit_precision, convW, convB, out_dir):
+    global STORAGE_COUNT_WEIGHTS, STORAGE_COUNT_BIAS
+
+    STORAGE_COUNT_WEIGHTS = 0
+    STORAGE_COUNT_BIAS = 0
     weights_required_memory = 0
+    out_weights = open(out_dir + 'storage.v', 'w')
+    out_bias = open(out_dir + 'storage_bias.v', 'w')
 
     for level_id in range(len(model.layers)):
         layer = model.layers[level_id]
@@ -433,36 +467,19 @@ def generate_weights_for_layers_sep_files(model, bp, weight_bit_precision, bias_
         req_mem = 0
 
         if layer_type == 'Conv2D':
-            out_file = out_dir + 'level_{:02d}_name_{}_bpset_{}_{}_{}_shape_{}.txt'.format(level_id, layer.name,
-                                                                                           bp + 1,
-                                                                                           weight_bit_precision + 1 + convW,
-                                                                                           bias_bit_precision + 1 + convB,
-                                                                                           get_shape_string(layer.get_weights()[0]))
-            out = open(out_file, 'w')
-            req_mem = gen_convolution_weights(level_id, layer, bp, weight_bit_precision, bias_bit_precision, convW, convB, out)
-            out.close()
-
+            req_mem = gen_convolution_weights(level_id, layer, bp, weight_bit_precision, bias_bit_precision, convW, convB, out_weights, out_bias)
         elif layer_type == 'DepthwiseConv2D':
-            out_file = out_dir + 'level_{:02d}_name_{}_bpset_{}_{}_{}_shape_{}.txt'.format(level_id, layer.name,
-                                                                                           bp + 1,
-                                                                                           weight_bit_precision + 1 + convW,
-                                                                                           bias_bit_precision + 1 + convB,
-                                                                                           get_shape_string(layer.get_weights()[0]))
-            out = open(out_file, 'w')
-            req_mem = gen_depthwise_convolution_weights(level_id, layer, bp, weight_bit_precision, bias_bit_precision, convW, convB, out)
-            out.close()
-
+            req_mem = gen_depthwise_convolution_weights(level_id, layer, bp, weight_bit_precision, bias_bit_precision, convW, convB, out_weights, out_bias)
         elif layer_type == 'Dense':
-            out_file = out_dir + 'level_{:02d}_name_{}_bp_{}_shape_{}.txt'.format(level_id, layer.name, weight_bit_precision, get_shape_string(layer.get_weights()[0]))
-            out = open(out_file, 'w')
-            req_mem = gen_dense_weights(level_id, layer, weight_bit_precision, out)
-            out.close()
+            req_mem = gen_dense_weights(level_id, layer, weight_bit_precision, out_weights)
         else:
             continue
 
         print('Required weights memory: {} bit'.format(req_mem))
         weights_required_memory += req_mem
 
+    out_weights.close()
+    out_bias.close()
     print('Overall weights memory requirements: {} bit ({:.2f} MB)'.format(weights_required_memory, weights_required_memory / (1024*1024)))
 
 
@@ -482,4 +499,4 @@ if __name__ == '__main__':
         os.mkdir(out_dir)
 
     model = get_model(model_path)
-    generate_weights_for_layers_sep_files(model, image_bit_precision, weight_bit_precision, bias_bit_precision, convW, convB, out_dir)
+    generate_weights_for_layers(model, image_bit_precision, weight_bit_precision, bias_bit_precision, convW, convB, out_dir)
