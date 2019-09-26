@@ -8,7 +8,7 @@ using Programmer. Next, run a special Python script:
 [data_uart_to_fpga.py](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/utils/data_uart_to_fpga.py). 
 Make sure that your folder with weights is next to the executable file and has the correct name.
 Depending on what weights you need - for people, animals or cars - select the appropriate file. 
-It must be written in the code [WEIGHT_FILE_TO_USE](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/utils/data_uart_to_fpga.py#4). 
+It must be written in the code [WEIGHT_FILE_TO_USE](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/utils/data_uart_to_fpga.py#L4). 
 If everything is done correctly then progress will go.
 
 ![Wires](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/img/FPGA-Img-04.png)
