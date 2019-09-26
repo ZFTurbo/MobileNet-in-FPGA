@@ -14,7 +14,6 @@ if __name__ == '__main__':
     l = 0
     for i in file:
         k += 1
-
     file.close()
 
     file = open(FILE_TO_WRITE, 'r')
