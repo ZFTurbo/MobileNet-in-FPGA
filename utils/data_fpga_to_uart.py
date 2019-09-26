@@ -1,7 +1,7 @@
 import serial
 from tqdm import tqdm
 
-FILE_TO_WRITE = 'weights/weights_cars_2.txt'
+FILE_TO_WRITE = 'weights/weights_cars.txt'
 
 if __name__ == '__main__':
     ser = serial.Serial(port='COM4', baudrate=115200, bytesize=8, timeout=0)
