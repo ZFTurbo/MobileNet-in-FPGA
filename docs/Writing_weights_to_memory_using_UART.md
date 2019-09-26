@@ -14,5 +14,5 @@ If everything is done correctly then progress will go.
 ![Wires](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/img/FPGA-Img-04.png)
 
 Upon completion of loading weights, an image from the camera will appear on the screen and the 
-neural network will start to recognize it. The result will be displayed in the upper left 
-corner in red (there is an required object) or in green (the required object is missing).
+neural network will start to recognize it. The result will be displayed in the upper left corner 
+in red (there is an required object) or in green (the required object is missing).
