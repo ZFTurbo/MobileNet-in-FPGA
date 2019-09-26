@@ -3,6 +3,7 @@ from tqdm import tqdm
 
 FILE_TO_WRITE = 'weights/weights_cars.txt'
 
+
 if __name__ == '__main__':
     ser = serial.Serial(port='COM4', baudrate=115200, bytesize=8, timeout=0)
     ser.write(bytes([255]))
@@ -36,8 +37,10 @@ if __name__ == '__main__':
             ser.write(bytes([int('0000' + minus + data_current[0] + data_current[1] + data_current[2], 2)]))
             l += 1
 
-    for i in range(3): ser.write(bytes([191]))
-    for i in range(3): ser.write(bytes([0]))
+    for i in range(3):
+        ser.write(bytes([191]))
+    for i in range(3):
+        ser.write(bytes([0]))
     file.close()
 
     print("Counter numbers: " + str(l))
