@@ -34,7 +34,7 @@ if __name__ == '__main__':
             ser.write(bytes([int('00' + data_current[9] + data_current[10] + data_current[11] + data_current[12] + data_current[13] + data_current[14], 2)]))
             ser.write(bytes([int('00' + data_current[3] + data_current[4] + data_current[5] + data_current[6] + data_current[7] + data_current[8], 2)]))
             ser.write(bytes([int('0000' + minus + data_current[0] + data_current[1] + data_current[2], 2)]))
-            l = l + 1
+            l += 1
 
     for i in range(3): ser.write(bytes([191]))
     for i in range(3): ser.write(bytes([0]))
