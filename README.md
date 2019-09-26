@@ -40,6 +40,10 @@ Note: You can skip part 1, 2 and 3 if you use our pretrained weight files below
 
 ![Connection of peripherals](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/img/Connection-of-Periferals.png)
 
+## Writing weights in memory
+
+[See guide](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/docs/Writing_weights_to_memory_using_UART.md)
+
 ## Description of method
 
 [Innovate FPGA](http://www.innovatefpga.com/cgi-bin/innovate/teams.pl?Id=EM031)
