@@ -1,14 +1,14 @@
 import serial
 from tqdm import tqdm
 
-FILE_TO_WRITE = 'weights/weights_cars.txt'
+WEIGHT_FILE_TO_USE = 'weights/weights_cars.txt'
 
 
 if __name__ == '__main__':
     ser = serial.Serial(port='COM4', baudrate=115200, bytesize=8, timeout=0)
     ser.write(bytes([255]))
 
-    file = open(FILE_TO_WRITE, 'r')
+    file = open(WEIGHT_FILE_TO_USE, 'r')
     k = 0
     j = 0
     l = 0
@@ -16,7 +16,7 @@ if __name__ == '__main__':
         k += 1
     file.close()
 
-    file = open(FILE_TO_WRITE, 'r')
+    file = open(WEIGHT_FILE_TO_USE, 'r')
     for i in tqdm(range(k)):
         string_current = file.readline()
         if ((string_current.split(" ")[0] != "\n") & (string_current.split(" ")[0] != "//")):
