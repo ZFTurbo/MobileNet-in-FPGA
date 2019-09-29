@@ -15,7 +15,7 @@ Python 3.*, keras 2.2.4, tensorflow, kito
 
 ## Demo
 
-![Youtube demo](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/img/Youtube-Screenshot.jpg)
+[![Youtube demo](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/img/Youtube-Screenshot.jpg)](https://www.youtube.com/watch?v=EQ9MJnWeHlo)
 
 ## How to run
 1) `python3 r01_prepare_open_images_dataset.py` - it will create training files using [Open Images Dataset (OID)](https://storage.googleapis.com/openimages/web/index.html).
