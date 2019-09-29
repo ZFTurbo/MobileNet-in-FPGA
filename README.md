@@ -13,6 +13,9 @@ Python 3.*, keras 2.2.4, tensorflow, kito
 2) Camera OV5640. Active array size: 2592 x 1944
 3) OpenVINO Starter Kit. Cyclone V (301K LE, 13,917 Kbits embedded memory)
 
+## Demo
+
+![Youtube demo](https://github.com/ZFTurbo/MobileNet-in-FPGA/blob/master/img/Youtube-Screenshot.jpg)
 
 ## How to run
 1) `python3 r01_prepare_open_images_dataset.py` - it will create training files using [Open Images Dataset (OID)](https://storage.googleapis.com/openimages/web/index.html).
