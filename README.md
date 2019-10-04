@@ -29,6 +29,10 @@ Note: You can skip part 1, 2 and 3 if you use our pretrained weight files below
 6) `python3 r06_generate_debug_data.py` - generate intermediate feature maps for each layer and details about first pixel calculation (can be used for debug)
 7) `python3 r07_generate_verilog_for_mobilenet.py` - generate verilog based on given model and parameters like number of convolution blocks
 
+## Updates
+
+* **2019.10.04** We greatly improved speed of image reading and preprocessing. Now it takes only 5% of total time instead of 77% earlier. Speed for 8 convolution version of device increased from ~10 FPS up to ~ 40 FPS.
+
 ## Pre-trained models
 
 |  | People detector (128px) | Cars detector (128px)  | Animals detector (128px) |
