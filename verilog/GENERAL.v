@@ -254,7 +254,7 @@ always @(posedge CLOCK_50 or negedge KEY[0])
 			begin
 				if (STOP_neuroset) 
 					begin
-						step_image = 0;
+						step_image = 1;
 						if (sh_result<2) sh_result = sh_result+1'b1;
 						else sh_result=0;
 						if (sh==0) RESULT_0 = RESULT_neuroset[1:0];
