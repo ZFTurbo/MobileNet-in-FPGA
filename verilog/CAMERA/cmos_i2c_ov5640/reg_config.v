@@ -205,7 +205,7 @@ always@(reg_index)
 	 44:reg_data<=24'h3c0a9c;// sample number[15:8]
 	 45:reg_data<=24'h3c0b40;// sample number[7:0]
 	 46:reg_data<=24'h381000;// Timing Hoffset[11:8]
-	 47:reg_data<=24'h381110;// Timing Hoffset[7:0]
+	 47:reg_data<=24'h381100;//10;// Timing Hoffset[7:0]
 	 48:reg_data<=24'h381200;// Timing Voffset[10:8] 
 	 49:reg_data<=24'h370864;
          
@@ -454,29 +454,29 @@ always@(reg_index)
 	 252:reg_data<=24'h303669;// PLL
 	 253:reg_data<=24'h3c0707; // lightmeter 1 threshold[7:0]
 	 254:reg_data<=24'h382047; // flip
-	 255:reg_data<=24'h382107; // mirror
+	 255:reg_data<=24'h382100;//07; // mirror
 	 256:reg_data<=24'h381431; // timing X inc
 	 257:reg_data<=24'h381531; // timing Y inc
 	 258:reg_data<=24'h380000; // HS
 	 259:reg_data<=24'h380100; // HS
          
 	 260:reg_data<=24'h380200; // VS
-	 261:reg_data<=24'h3803fa; // VS
+	 261:reg_data<=24'h380300;//fa; // VS
 	 262:reg_data<=24'h38040a; // HW (HE)
 	 263:reg_data<=24'h38053f; // HW (HE)
-	 264:reg_data<=24'h380606; // VH (VE)
-	 265:reg_data<=24'h3807a9; // VH (VE)
+	 264:reg_data<=24'h380607;//06; // VH (VE)
+	 265:reg_data<=24'h38079f;//a9; // VH (VE)
 	 266:reg_data<=24'h380801;  //320
 	 267:reg_data<=24'h380940;
 	 268:reg_data<=24'h380a00;  //240
 	 269:reg_data<=24'h380bf0;
          
          
-	 270:reg_data<=24'h380c07; // HTS
-	 271:reg_data<=24'h380d64; // HTS
-	 272:reg_data<=24'h380e02; // VTS
-	 273:reg_data<=24'h380fe4; // VTS
-	 274:reg_data<=24'h381304; // timing V offset
+	 270:reg_data<=24'h380c0c;//07; // HTS
+	 271:reg_data<=24'h380d80;//64; // HTS
+	 272:reg_data<=24'h380e07;//02; // VTS
+	 273:reg_data<=24'h380fd0;//e4; // VTS
+	 274:reg_data<=24'h381300;//04; // timing V offset
 	 275:reg_data<=24'h361800;
 	 276:reg_data<=24'h361229;
 	 277:reg_data<=24'h370952;
@@ -503,7 +503,7 @@ always@(reg_index)
 	 295:reg_data<=24'h460c20;
 	 296:reg_data<=24'h483716; // MIPI global timing
 	 297:reg_data<=24'h382404; // PCLK manual divider
-	 298:reg_data<=24'h500183; // SDE on, CMX on, AWB on
+	 298:reg_data<=24'h5001a3;//83; // SDE on, CMX on, AWB on
 	 299:reg_data<=24'h350300; // AEC/AGC on 
 	 300:reg_data<=24'h301602; //Strobe output enable
 	 301:reg_data<=24'h3b070a; //FREX strobe mode1	
